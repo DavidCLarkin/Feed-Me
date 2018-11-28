@@ -7,30 +7,39 @@ private var sliceSoundAction: SKAction!
 private var splashSoundAction: SKAction!
 private var nomNomSoundAction: SKAction!
 private var levelOver = false
+private var caughtPineapple = false
 private var vineCut = false
+var scoreLabel: SKLabelNode!
+var score = 0
 
-class GameScene: SKScene, SKPhysicsContactDelegate {
+class GameScene: SKScene, SKPhysicsContactDelegate
+{
 
-    override func didMove(to view: SKView) {
+    override func didMove(to view: SKView)
+    {
         levelOver = false
+        caughtPineapple = false
         setUpPhysics()
         setUpScenery()
         setUpPrize()
         setUpVines()
         setUpCrocodile()
         setUpAudio()
+        setUpScore()
         
     }
     
     //MARK: - Level setup
     
-    fileprivate func setUpPhysics() {
+    fileprivate func setUpPhysics()
+    {
         physicsWorld.contactDelegate = self
         physicsWorld.gravity = CGVector(dx: 0.0, dy: -9.8)
         physicsWorld.speed = 1.0
     }
     
-    fileprivate func setUpScenery() {
+    fileprivate func setUpScenery()
+    {
         var background: SKSpriteNode!
         background = SKSpriteNode(imageNamed: ImageName.Background)
         background.anchorPoint = CGPoint(x: 0, y:0)
@@ -47,7 +56,9 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         water.zPosition = Layer.Water
         addChild(water)
     }
-    fileprivate func setUpPrize() {
+    
+    fileprivate func setUpPrize()
+    {
         prize = SKSpriteNode(imageNamed: ImageName.Prize)
         prize.position = CGPoint(x: self.size.width*0.5, y: self.size.height*0.7)
         prize.zPosition = Layer.Prize
@@ -61,13 +72,15 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     
     //MARK: - Vine methods
     
-    fileprivate func setUpVines() {
+    fileprivate func setUpVines()
+    {
         // 1 load vine data
         let dataFile = Bundle.main.path(forResource: GameConfiguration.VineDataFile, ofType: nil)
         let vines = NSArray(contentsOfFile: dataFile!) as! [NSDictionary]
         
         // 2 add vines
-        for i in 0..<vines.count {
+        for i in 0..<vines.count
+        {
             // 3 create vine
             let vineData = vines[i]
             let length = Int(vineData["length"] as! NSNumber)
@@ -84,9 +97,20 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         }
     }
     
+    fileprivate func setUpScore()
+    {
+        let scoreLabel = SKLabelNode(fontNamed: "Chalkduster")
+        scoreLabel.text = "Score: \(score)"
+        scoreLabel.fontSize = 35
+        scoreLabel.fontColor = SKColor.white
+        scoreLabel.position = CGPoint(x: self.size.width * 0.5, y: self.size.height*0.95)
+        
+        addChild(scoreLabel)
+    }
     //MARK: - Croc methods
     
-    fileprivate func setUpCrocodile() {
+    fileprivate func setUpCrocodile()
+    {
         crocodile = SKSpriteNode(imageNamed: ImageName.CrocMouthClosed)
         crocodile.position = CGPoint(x: self.size.width*0.75, y: self.size.height*0.312)
         crocodile.zPosition = Layer.Crocodile
@@ -98,7 +122,9 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         addChild(crocodile)
         animateCrocodile()
     }
-    fileprivate func animateCrocodile() {
+    
+    fileprivate func animateCrocodile()
+    {
         let durationOpen = drand48()+2
         let open = SKAction.setTexture(SKTexture(imageNamed: ImageName.CrocMouthOpen))
         let waitOpen = SKAction.wait(forDuration: durationOpen)
@@ -110,7 +136,8 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         crocodile.run(loop)
     }
     
-    fileprivate func runNomNomAnimationWithDelay(_ delay: TimeInterval) {
+    fileprivate func runNomNomAnimationWithDelay(_ delay: TimeInterval)
+    {
         crocodile.removeAllActions()
         
         let closeMouth = SKAction.setTexture(SKTexture(imageNamed: ImageName.CrocMouthClosed))
@@ -125,12 +152,15 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     
     //MARK: - Touch handling
     
-    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?)
+    {
         vineCut = false
     }
     
-    override func touchesMoved(_ touches: Set<UITouch>, with event: UIEvent?) {
-        for touch in touches {
+    override func touchesMoved(_ touches: Set<UITouch>, with event: UIEvent?)
+    {
+        for touch in touches
+        {
             let startPoint = touch.location(in: self)
             let endPoint = touch.previousLocation(in: self)
             
@@ -149,24 +179,37 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     
     //MARK: - Game logic
     
-    override func update(_ currentTime: TimeInterval) {
-        if levelOver {
+    override func update(_ currentTime: TimeInterval)
+    {
+        print(score)
+        if levelOver && !caughtPineapple
+        {
+            score = 0
             return
         }
-        if prize.position.y <= 0 {
+        
+        if prize.position.y <= 0
+        {
             levelOver = true
+            score = 0
             run(splashSoundAction)
             switchToNewGameWithTransition(SKTransition.fade(withDuration: 1.0))
         }
     }
     
-    func didBegin(_ contact: SKPhysicsContact) {
-        if levelOver {
+    func didBegin(_ contact: SKPhysicsContact)
+    {
+        if levelOver
+        {
             return
         }
+        
         if (contact.bodyA.node == crocodile && contact.bodyB.node == prize)
-            || (contact.bodyA.node == prize && contact.bodyB.node == crocodile) {
+            || (contact.bodyA.node == prize && contact.bodyB.node == crocodile)
+        {
             levelOver = true
+            caughtPineapple = true
+            score += 1
             // shrink the pineapple away
             let shrink = SKAction.scale(to: 0, duration: 0.08)
             let removeNode = SKAction.removeFromParent()
@@ -177,13 +220,16 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         }
     }
     
-    fileprivate func checkIfVineCutWithBody(_ body: SKPhysicsBody) {
-        if vineCut && !GameConfiguration.CanCutMultipleVinesAtOnce {
+    fileprivate func checkIfVineCutWithBody(_ body: SKPhysicsBody)
+    {
+        if vineCut && !GameConfiguration.CanCutMultipleVinesAtOnce
+        {
             return
         }
         let node = body.node!
         // if it has a name it must be a vine node
-        if let name = node.name {
+        if let name = node.name
+        {
             // snip the vine
             node.removeFromParent()
             run(sliceSoundAction)
@@ -200,7 +246,8 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         }
         vineCut = true
     }
-    fileprivate func switchToNewGameWithTransition(_ transition: SKTransition) {
+    fileprivate func switchToNewGameWithTransition(_ transition: SKTransition)
+    {
         let delay = SKAction.wait(forDuration: 1)
         let sceneChange = SKAction.run({
             let scene = GameScene(size: self.size)
@@ -212,21 +259,25 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     
     //MARK: - Audio
     private static var backgroundMusicPlayer: AVAudioPlayer!
-    fileprivate func setUpAudio() {
+    
+    fileprivate func setUpAudio()
+    {
         
-        if GameScene.backgroundMusicPlayer == nil {
+        if GameScene.backgroundMusicPlayer == nil
+        {
             let backgroundMusicURL = Bundle.main.url(forResource: SoundFile.BackgroundMusic, withExtension: nil)
             
-            do {
+            do
+            {
                 let theme = try AVAudioPlayer(contentsOf: backgroundMusicURL!)
                 GameScene.backgroundMusicPlayer = theme
                 
             } catch {
-                // couldn't load file :[
             }
             
             GameScene.backgroundMusicPlayer.numberOfLoops = -1
-            if !GameScene.backgroundMusicPlayer.isPlaying {
+            if !GameScene.backgroundMusicPlayer.isPlaying
+            {
                 GameScene.backgroundMusicPlayer.play()
             }
             sliceSoundAction = SKAction.playSoundFileNamed(SoundFile.Slice, waitForCompletion: false)
