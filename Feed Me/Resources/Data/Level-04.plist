@@ -4,7 +4,7 @@
 <array>
 	<dict>
 		<key>relAnchorPoint</key>
-		<string>{.8593, .7588}</string>
+		<string>{.7642, .7588}</string>
 		<key>anchorPoint</key>
 		<string>{275,431}</string>
 		<key>length</key>
@@ -12,17 +12,25 @@
 	</dict>
 	<dict>
 		<key>relAnchorPoint</key>
-		<string>{.1000, .7543}</string>
+		<string>{.1253, .7588}</string>
 		<key>anchorPoint</key>
-		<string>{76, 342}</string>
+		<string>{65,653}</string>
 		<key>length</key>
-		<integer>25</integer>
+		<integer>24</integer>
 	</dict>
 	<dict>
 		<key>relAnchorPoint</key>
-		<string>{.8500, .8996}</string>
+		<string>{.3421, .8753}</string>
 		<key>anchorPoint</key>
-		<string>{272,511}</string>
+		<string>{142, 345}</string>
+		<key>length</key>
+		<integer>16</integer>
+	</dict>
+	<dict>
+		<key>relAnchorPoint</key>
+		<string>{.6532, .7542}</string>
+		<key>anchorPoint</key>
+		<string>{272,643}</string>
 		<key>length</key>
 		<integer>18</integer>
 	</dict>
@@ -32,7 +40,7 @@
 		<key>anchorPoint</key>
 		<string>{275,431}</string>
 		<key>length</key>
-		<integer>16</integer>
+		<integer>25</integer>
 	</dict>
 </array>
 </plist>

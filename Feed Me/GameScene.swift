@@ -3,14 +3,19 @@ import AVFoundation
 
 private var crocodile: SKSpriteNode!
 private var prize: SKSpriteNode!
+private var heart: SKSpriteNode!
 private var sliceSoundAction: SKAction!
 private var splashSoundAction: SKAction!
 private var nomNomSoundAction: SKAction!
 private var levelOver = false
 private var caughtPineapple = false
 private var vineCut = false
-var scoreLabel: SKLabelNode!
-var score = 0
+private var scoreLabel: SKLabelNode!
+private var levelLabel: SKLabelNode!
+private var score = 0
+private var lives = 3
+private var level = 0
+private let maxLevel = GameConfiguration.VineDataFile.count - 1
 
 class GameScene: SKScene, SKPhysicsContactDelegate
 {
@@ -25,7 +30,8 @@ class GameScene: SKScene, SKPhysicsContactDelegate
         setUpVines()
         setUpCrocodile()
         setUpAudio()
-        setUpScore()
+        setUpHearts()
+        setUpLabels()
         
     }
     
@@ -57,10 +63,28 @@ class GameScene: SKScene, SKPhysicsContactDelegate
         addChild(water)
     }
     
+    fileprivate func setUpHearts()
+    {
+        for i in 0..<lives
+        {
+            print("adding")
+            heart = SKSpriteNode(imageNamed: ImageName.Heart)
+            var xPos = self.size.width*0.1 //CGFloat
+            let xPosInt = Int(xPos) * (i+1) // Int
+            xPos = CGFloat(xPosInt) // Convert to CGFloat
+            let yPos = self.size.height * 0.9
+            heart.position = CGPoint(x: xPos, y: yPos)
+            heart.zPosition = Layer.Hud
+            addChild(heart)
+        }
+    }
+    
     fileprivate func setUpPrize()
     {
         prize = SKSpriteNode(imageNamed: ImageName.Prize)
-        prize.position = CGPoint(x: self.size.width*0.5, y: self.size.height*0.7)
+        let randomX = CGFloat.random(in: 0.2 ..< 0.8)
+        print(randomX)
+        prize.position = CGPoint(x: self.size.width*randomX, y: self.size.height*0.7)
         prize.zPosition = Layer.Prize
         prize.physicsBody = SKPhysicsBody(texture: SKTexture(imageNamed: ImageName.Prize), size: prize.size)
         prize.physicsBody?.categoryBitMask = PhysicsCategory.Prize
@@ -75,7 +99,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate
     fileprivate func setUpVines()
     {
         // 1 load vine data
-        let dataFile = Bundle.main.path(forResource: GameConfiguration.VineDataFile, ofType: nil)
+        let dataFile = Bundle.main.path(forResource: GameConfiguration.VineDataFile[level], ofType: nil)
         let vines = NSArray(contentsOfFile: dataFile!) as! [NSDictionary]
         
         // 2 add vines
@@ -96,17 +120,29 @@ class GameScene: SKScene, SKPhysicsContactDelegate
             vine.attachToPrize(prize)
         }
     }
-    
-    fileprivate func setUpScore()
+    // MARK: - Labels
+    fileprivate func setUpLabels()
     {
         let scoreLabel = SKLabelNode(fontNamed: "Chalkduster")
         scoreLabel.text = "Score: \(score)"
         scoreLabel.fontSize = 35
         scoreLabel.fontColor = SKColor.white
-        scoreLabel.position = CGPoint(x: self.size.width * 0.5, y: self.size.height*0.95)
+        scoreLabel.position = CGPoint(x: self.size.width * 0.5, y: self.size.height*0.9)
+        scoreLabel.zPosition = Layer.Hud
         
         addChild(scoreLabel)
+        
+        let levelLabel = SKLabelNode(fontNamed: "Chalkduster")
+        levelLabel.text = "Level: \(level+1)"
+        levelLabel.fontSize = 35
+        levelLabel.fontColor = SKColor.white
+        levelLabel.position = CGPoint(x: self.size.width * 0.8, y: self.size.height * 0.9)
+        levelLabel.zPosition = Layer.Hud
+        
+        addChild(levelLabel)
+        
     }
+    
     //MARK: - Croc methods
     
     fileprivate func setUpCrocodile()
@@ -174,6 +210,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate
             showMoveParticles(touchPosition: startPoint)
         }
     }
+    
     override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) { }
     fileprivate func showMoveParticles(touchPosition: CGPoint) { }
     
@@ -181,20 +218,34 @@ class GameScene: SKScene, SKPhysicsContactDelegate
     
     override func update(_ currentTime: TimeInterval)
     {
-        print(score)
+        //print(score)
+        print("Lives:  \(lives)")
         if levelOver && !caughtPineapple
         {
-            score = 0
             return
         }
         
         if prize.position.y <= 0
         {
+            removeLifeAndPineapple()
             levelOver = true
-            score = 0
+            
+            if lives <= 0
+            {
+                score = 0
+                level = 0
+                lives = 3
+            }
+            
             run(splashSoundAction)
             switchToNewGameWithTransition(SKTransition.fade(withDuration: 1.0))
         }
+    }
+    
+    func removeLifeAndPineapple()
+    {
+        prize.removeFromParent()
+        lives -= 1
     }
     
     func didBegin(_ contact: SKPhysicsContact)
@@ -210,6 +261,10 @@ class GameScene: SKScene, SKPhysicsContactDelegate
             levelOver = true
             caughtPineapple = true
             score += 1
+            if(level+1 <= maxLevel)
+            {
+                level += 1
+            }
             // shrink the pineapple away
             let shrink = SKAction.scale(to: 0, duration: 0.08)
             let removeNode = SKAction.removeFromParent()

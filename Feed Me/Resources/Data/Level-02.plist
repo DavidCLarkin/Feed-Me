@@ -4,33 +4,33 @@
 <array>
 	<dict>
 		<key>relAnchorPoint</key>
-		<string>{.8593, .7588}</string>
+		<string>{.3456, .6231}</string>
 		<key>anchorPoint</key>
-		<string>{275,431}</string>
-		<key>length</key>
-		<integer>16</integer>
-	</dict>
-	<dict>
-		<key>relAnchorPoint</key>
-		<string>{.1000, .7543}</string>
-		<key>anchorPoint</key>
-		<string>{76, 342}</string>
+		<string>{142,600}</string>
 		<key>length</key>
 		<integer>25</integer>
 	</dict>
 	<dict>
 		<key>relAnchorPoint</key>
-		<string>{.8500, .8996}</string>
+		<string>{.1000, .7543}</string>
 		<key>anchorPoint</key>
-		<string>{272,511}</string>
+		<string>{154, 400}</string>
+		<key>length</key>
+		<integer>23</integer>
+	</dict>
+	<dict>
+		<key>relAnchorPoint</key>
+		<string>{.2975, .7965}</string>
+		<key>anchorPoint</key>
+		<string>{260,670}</string>
 		<key>length</key>
 		<integer>18</integer>
 	</dict>
 	<dict>
 		<key>relAnchorPoint</key>
-		<string>{.8593, .7588}</string>
+		<string>{.8000, .9000}</string>
 		<key>anchorPoint</key>
-		<string>{275,431}</string>
+		<string>{159,240}</string>
 		<key>length</key>
 		<integer>16</integer>
 	</dict>

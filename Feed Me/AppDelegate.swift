@@ -2,8 +2,8 @@
 //  AppDelegate.swift
 //  Feed Me
 //
-//  Created by Sean Kearney on 09/11/2018.
-//  Copyright © 2018 Sean Kearney. All rights reserved.
+//  Created by David Larkin on 18/11/2018.
+//  Copyright © 2018 David Larkin. All rights reserved.
 //
 
 import UIKit

@@ -2,22 +2,26 @@
 //  GameViewController.swift
 //  Feed Me
 //
-//  Created by Sean Kearney on 09/11/2018.
-//  Copyright © 2018 Sean Kearney. All rights reserved.
+//  Created by David Larkin on 09/11/2018.
+//  Copyright © 2018 David Larkin. All rights reserved.
 //
 
 import UIKit
 import SpriteKit
 import GameplayKit
 
-class GameViewController: UIViewController {
+class GameViewController: UIViewController
+{
 
-    override func viewDidLoad() {
+    override func viewDidLoad()
+    {
         super.viewDidLoad()
         
-        if let view = self.view as! SKView? {
+        if let view = self.view as! SKView?
+        {
             // Load the SKScene from 'GameScene.sks'
-            if let scene = SKScene(fileNamed: "GameScene") {
+            if let scene = SKScene(fileNamed: "GameScene")
+            {
                 // Set the scale mode to scale to fit the window
                 scene.scaleMode = .aspectFill
                 

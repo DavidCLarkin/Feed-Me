@@ -7,6 +7,9 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		6343A01821B0E5F500FBA072 /* Level-02.plist in Resources */ = {isa = PBXBuildFile; fileRef = 6343A01721B0E5F500FBA072 /* Level-02.plist */; };
+		6343A01B21B0EEF500FBA072 /* Level-04.plist in Resources */ = {isa = PBXBuildFile; fileRef = 6343A01921B0EEF500FBA072 /* Level-04.plist */; };
+		6343A01C21B0EEF500FBA072 /* Level-03.plist in Resources */ = {isa = PBXBuildFile; fileRef = 6343A01A21B0EEF500FBA072 /* Level-03.plist */; };
 		D98A5E6A21A256FE006A6D11 /* Particle.png in Resources */ = {isa = PBXBuildFile; fileRef = D98A5E6421A256FE006A6D11 /* Particle.png */; };
 		D98A5E6B21A256FE006A6D11 /* Particle 02-26-24-747.png in Resources */ = {isa = PBXBuildFile; fileRef = D98A5E6521A256FE006A6D11 /* Particle 02-26-24-747.png */; };
 		D98A5E6C21A256FE006A6D11 /* Particle.sks in Resources */ = {isa = PBXBuildFile; fileRef = D98A5E6621A256FE006A6D11 /* Particle.sks */; };
@@ -32,6 +35,9 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		6343A01721B0E5F500FBA072 /* Level-02.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "Level-02.plist"; sourceTree = "<group>"; };
+		6343A01921B0EEF500FBA072 /* Level-04.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "Level-04.plist"; sourceTree = "<group>"; };
+		6343A01A21B0EEF500FBA072 /* Level-03.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "Level-03.plist"; sourceTree = "<group>"; };
 		D98A5E6421A256FE006A6D11 /* Particle.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Particle.png; sourceTree = "<group>"; };
 		D98A5E6521A256FE006A6D11 /* Particle 02-26-24-747.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Particle 02-26-24-747.png"; sourceTree = "<group>"; };
 		D98A5E6621A256FE006A6D11 /* Particle.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = Particle.sks; sourceTree = "<group>"; };
@@ -158,6 +164,9 @@
 		D99397D22195AC8C00FB5D4F /* Data */ = {
 			isa = PBXGroup;
 			children = (
+				6343A01A21B0EEF500FBA072 /* Level-03.plist */,
+				6343A01921B0EEF500FBA072 /* Level-04.plist */,
+				6343A01721B0E5F500FBA072 /* Level-02.plist */,
 				D99397D32195AC8C00FB5D4F /* Level-01.plist */,
 			);
 			path = Data;
@@ -231,10 +240,13 @@
 				D99397DA2195AC8C00FB5D4F /* Splash.caf in Resources */,
 				D99397B12195ABD500FB5D4F /* GameScene.sks in Resources */,
 				D98A5E6D21A256FE006A6D11 /* Particle 02-26-24-775.sks in Resources */,
+				6343A01B21B0EEF500FBA072 /* Level-04.plist in Resources */,
 				D98A5E6C21A256FE006A6D11 /* Particle.sks in Resources */,
+				6343A01821B0E5F500FBA072 /* Level-02.plist in Resources */,
 				D98A5E6A21A256FE006A6D11 /* Particle.png in Resources */,
 				D98A5E6B21A256FE006A6D11 /* Particle 02-26-24-747.png in Resources */,
 				D99397BC2195ABD800FB5D4F /* Assets.xcassets in Resources */,
+				6343A01C21B0EEF500FBA072 /* Level-03.plist in Resources */,
 				D99397BF2195ABD800FB5D4F /* LaunchScreen.storyboard in Resources */,
 				D99397B32195ABD500FB5D4F /* Actions.sks in Resources */,
 				D99397D72195AC8C00FB5D4F /* CheeZeeJungle.caf in Resources */,
