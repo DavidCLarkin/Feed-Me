@@ -12,16 +12,19 @@ private var caughtPineapple = false
 private var vineCut = false
 private var scoreLabel: SKLabelNode!
 private var levelLabel: SKLabelNode!
+private var gameOverLabel: SKLabelNode!
 private var score = 0
 private var lives = 3
-private var level = 0
-private let maxLevel = GameConfiguration.VineDataFile.count - 1
+private var lastVineX: CGFloat!
+//private var level = 0
+//private let maxLevel = GameConfiguration.VineDataFile.count - 1
 
 class GameScene: SKScene, SKPhysicsContactDelegate
 {
 
     override func didMove(to view: SKView)
     {
+        print(GameConfiguration.CanCutMultipleVinesAtOnce)
         levelOver = false
         caughtPineapple = false
         setUpPhysics()
@@ -83,7 +86,6 @@ class GameScene: SKScene, SKPhysicsContactDelegate
     {
         prize = SKSpriteNode(imageNamed: ImageName.Prize)
         let randomX = CGFloat.random(in: 0.2 ..< 0.8)
-        print(randomX)
         prize.position = CGPoint(x: self.size.width*randomX, y: self.size.height*0.7)
         prize.zPosition = Layer.Prize
         prize.physicsBody = SKPhysicsBody(texture: SKTexture(imageNamed: ImageName.Prize), size: prize.size)
@@ -99,18 +101,37 @@ class GameScene: SKScene, SKPhysicsContactDelegate
     fileprivate func setUpVines()
     {
         // 1 load vine data
-        let dataFile = Bundle.main.path(forResource: GameConfiguration.VineDataFile[level], ofType: nil)
-        let vines = NSArray(contentsOfFile: dataFile!) as! [NSDictionary]
+        //let dataFile = Bundle.main.path(forResource: GameConfiguration.VineDataFile[level], ofType: nil)
+        //let vines = NSArray(contentsOfFile: dataFile!) as! [NSDictionary]
+        let vines = Int.random(in: 2 ... 5)
         
         // 2 add vines
-        for i in 0..<vines.count
+        for i in 0..<vines
         {
+            // Changed this to a pseudo random generation of vines
             // 3 create vine
-            let vineData = vines[i]
-            let length = Int(vineData["length"] as! NSNumber)
-            let relAnchorPoint = NSCoder.cgPoint(for: vineData["relAnchorPoint"] as! String)
-            let anchorPoint = CGPoint(x: relAnchorPoint.x * size.width,
-                                      y: relAnchorPoint.y * size.height)
+            //let vineData = vines[i]
+            let length = Int(CGFloat.random(in: 16 ..< 21))
+            //let length = Int(vineData["length"] as! NSNumber)
+            var anchorPoint: CGPoint!
+            let relAnchorPoint = CGPoint(x: CGFloat.random(in: 0.15 ... 0.9), y: CGFloat.random(in: 0.8 ... 0.95))
+            //let relAnchorPoint = NSCoder.cgPoint(for: vineData["relAnchorPoint"] as! String)
+            anchorPoint = CGPoint(x: relAnchorPoint.x * size.width,
+                                                  y: relAnchorPoint.y * size.height)
+            lastVineX = anchorPoint.x
+            
+            // Just checking if 2 vines created after eachother are too close, reroll values. Doesn't guarantee they'll be further apart, just sometimes it will.
+            if i > 1
+            {
+                if abs(lastVineX - anchorPoint.x) < 0.1
+                {
+                    let relAnchorPoint = CGPoint(x: CGFloat.random(in: 0.15 ... 0.9), y: CGFloat.random(in: 0.8 ... 0.95))
+                    anchorPoint = CGPoint(x: relAnchorPoint.x * size.width,
+                                          y: relAnchorPoint.y * size.height)
+                    lastVineX = anchorPoint.x
+                }
+            }
+            
             let vine = VineNode(length: length, anchorPoint: anchorPoint, name: "\(i)")
             
             // 4 add to scene
@@ -131,7 +152,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate
         scoreLabel.zPosition = Layer.Hud
         
         addChild(scoreLabel)
-        
+        /*
         let levelLabel = SKLabelNode(fontNamed: "Chalkduster")
         levelLabel.text = "Level: \(level+1)"
         levelLabel.fontSize = 35
@@ -140,9 +161,22 @@ class GameScene: SKScene, SKPhysicsContactDelegate
         levelLabel.zPosition = Layer.Hud
         
         addChild(levelLabel)
+ */
         
     }
     
+    fileprivate func displayGameOver()
+    {
+        let gameOverLabel = SKLabelNode(fontNamed: "Chalkduster")
+        gameOverLabel.text = "GAME OVER!"
+        gameOverLabel.fontSize = 50
+        gameOverLabel.fontColor = SKColor.red
+        gameOverLabel.position = CGPoint(x: self.size.width * 0.5, y: self.size.height * 0.5)
+        gameOverLabel.zPosition = Layer.Hud
+        
+        addChild(gameOverLabel)
+        
+    }
     //MARK: - Croc methods
     
     fileprivate func setUpCrocodile()
@@ -219,7 +253,6 @@ class GameScene: SKScene, SKPhysicsContactDelegate
     override func update(_ currentTime: TimeInterval)
     {
         //print(score)
-        print("Lives:  \(lives)")
         if levelOver && !caughtPineapple
         {
             return
@@ -232,9 +265,12 @@ class GameScene: SKScene, SKPhysicsContactDelegate
             
             if lives <= 0
             {
+                displayGameOver()
+                returnToMenuScene()
                 score = 0
-                level = 0
+                //level = 0
                 lives = 3
+                return
             }
             
             run(splashSoundAction)
@@ -246,6 +282,15 @@ class GameScene: SKScene, SKPhysicsContactDelegate
     {
         prize.removeFromParent()
         lives -= 1
+    }
+    
+    func returnToMenuScene()
+    {
+        let menuScene = MenuScene(size: self.size)
+        let transition = SKTransition.doorsCloseHorizontal(withDuration: 3)
+        menuScene.scaleMode = SKSceneScaleMode.aspectFill
+        self.view?.presentScene(menuScene, transition: transition)
+        
     }
     
     func didBegin(_ contact: SKPhysicsContact)
@@ -261,10 +306,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate
             levelOver = true
             caughtPineapple = true
             score += 1
-            if(level+1 <= maxLevel)
-            {
-                level += 1
-            }
+            
             // shrink the pineapple away
             let shrink = SKAction.scale(to: 0, duration: 0.08)
             let removeNode = SKAction.removeFromParent()
@@ -313,7 +355,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate
     }
     
     //MARK: - Audio
-    private static var backgroundMusicPlayer: AVAudioPlayer!
+    public static var backgroundMusicPlayer: AVAudioPlayer!
     
     fileprivate func setUpAudio()
     {
