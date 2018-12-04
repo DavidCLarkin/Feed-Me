@@ -13,6 +13,7 @@
 		63B1BBAD21B18BDD00979A06 /* MenuScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63B1BBAC21B18BDD00979A06 /* MenuScene.swift */; };
 		63B1BBB921B1965900979A06 /* MenuScene.sks in Resources */ = {isa = PBXBuildFile; fileRef = 63B1BBB821B1965900979A06 /* MenuScene.sks */; };
 		63B1BBBB21B197F200979A06 /* ButtonNode.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63B1BBBA21B197F200979A06 /* ButtonNode.swift */; };
+		63F7B07621B6338600F32FC4 /* MusicHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63F7B07521B6338600F32FC4 /* MusicHandler.swift */; };
 		D98A5E6A21A256FE006A6D11 /* Particle.png in Resources */ = {isa = PBXBuildFile; fileRef = D98A5E6421A256FE006A6D11 /* Particle.png */; };
 		D98A5E6B21A256FE006A6D11 /* Particle 02-26-24-747.png in Resources */ = {isa = PBXBuildFile; fileRef = D98A5E6521A256FE006A6D11 /* Particle 02-26-24-747.png */; };
 		D98A5E6C21A256FE006A6D11 /* Particle.sks in Resources */ = {isa = PBXBuildFile; fileRef = D98A5E6621A256FE006A6D11 /* Particle.sks */; };
@@ -44,6 +45,7 @@
 		63B1BBAC21B18BDD00979A06 /* MenuScene.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuScene.swift; sourceTree = "<group>"; };
 		63B1BBB821B1965900979A06 /* MenuScene.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; name = MenuScene.sks; path = ../../../Downloads/MenuScene.sks; sourceTree = "<group>"; };
 		63B1BBBA21B197F200979A06 /* ButtonNode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ButtonNode.swift; sourceTree = "<group>"; };
+		63F7B07521B6338600F32FC4 /* MusicHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MusicHandler.swift; sourceTree = "<group>"; };
 		D98A5E6421A256FE006A6D11 /* Particle.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Particle.png; sourceTree = "<group>"; };
 		D98A5E6521A256FE006A6D11 /* Particle 02-26-24-747.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Particle 02-26-24-747.png"; sourceTree = "<group>"; };
 		D98A5E6621A256FE006A6D11 /* Particle.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = Particle.sks; sourceTree = "<group>"; };
@@ -124,6 +126,7 @@
 			children = (
 				D99397DE2195B06300FB5D4F /* Constants.swift */,
 				63B1BBBA21B197F200979A06 /* ButtonNode.swift */,
+				63F7B07521B6338600F32FC4 /* MusicHandler.swift */,
 			);
 			path = Helpers;
 			sourceTree = "<group>";
@@ -274,6 +277,7 @@
 				D99397B72195ABD500FB5D4F /* GameViewController.swift in Sources */,
 				D99397AF2195ABD500FB5D4F /* AppDelegate.swift in Sources */,
 				63B1BBAD21B18BDD00979A06 /* MenuScene.swift in Sources */,
+				63F7B07621B6338600F32FC4 /* MusicHandler.swift in Sources */,
 				D98A5E7121A2578C006A6D11 /* VineNode.swift in Sources */,
 				D99397DF2195B06300FB5D4F /* Constants.swift in Sources */,
 				63B1BBBB21B197F200979A06 /* ButtonNode.swift in Sources */,

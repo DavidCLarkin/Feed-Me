@@ -355,31 +355,17 @@ class GameScene: SKScene, SKPhysicsContactDelegate
     }
     
     //MARK: - Audio
-    public static var backgroundMusicPlayer: AVAudioPlayer!
+    //public static var backgroundMusicPlayer: AVAudioPlayer!
     
     fileprivate func setUpAudio()
     {
-        
-        if GameScene.backgroundMusicPlayer == nil
-        {
-            let backgroundMusicURL = Bundle.main.url(forResource: SoundFile.BackgroundMusic, withExtension: nil)
-            
-            do
+            startMusic()
+            if !backgroundMusicPlayer.isPlaying
             {
-                let theme = try AVAudioPlayer(contentsOf: backgroundMusicURL!)
-                GameScene.backgroundMusicPlayer = theme
-                
-            } catch {
-            }
-            
-            GameScene.backgroundMusicPlayer.numberOfLoops = -1
-            if !GameScene.backgroundMusicPlayer.isPlaying
-            {
-                GameScene.backgroundMusicPlayer.play()
+                backgroundMusicPlayer.play()
             }
             sliceSoundAction = SKAction.playSoundFileNamed(SoundFile.Slice, waitForCompletion: false)
             splashSoundAction = SKAction.playSoundFileNamed(SoundFile.Splash, waitForCompletion: false)
             nomNomSoundAction = SKAction.playSoundFileNamed(SoundFile.NomNom, waitForCompletion: false)
-        }
     }
 }

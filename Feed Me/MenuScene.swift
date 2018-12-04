@@ -11,6 +11,7 @@ import AVFoundation
 
 var menuButton: ButtonNode!
 var optionsButton: ButtonNode!
+var volumeSlider: UISlider!
 
 class MenuScene: SKScene
 {
@@ -19,6 +20,32 @@ class MenuScene: SKScene
         self.anchorPoint = CGPoint(x: 0,y: 0)
         setUpImage()
         setUpButtons()
+        startMusic()
+        setUpSlider()
+    }
+    
+    fileprivate func setUpSlider()
+    {
+        let volumeSlider = UISlider()
+        volumeSlider.frame = CGRect(x: UIScreen.main.bounds.size.width*0.25, y: UIScreen.main.bounds.size.height*0.9, width: UIScreen.main.bounds.size.width*0.5, height: 35)
+        volumeSlider.minimumTrackTintColor = .green
+        volumeSlider.maximumTrackTintColor = .red
+        volumeSlider.thumbTintColor = .black
+        
+        volumeSlider.maximumValue = 10
+        volumeSlider.minimumValue = 0
+        volumeSlider.setValue(5, animated: false)
+        
+        volumeSlider.addTarget(self, action: #selector(MenuScene.sliderValueDidChange(_:)), for: .valueChanged)
+        
+        self.view?.addSubview(volumeSlider)
+        
+        backgroundMusicPlayer.volume = volumeSlider.value
+    }
+    
+    @objc func sliderValueDidChange(_ sender:UISlider!)
+    {
+        backgroundMusicPlayer.volume = sender.value
     }
     
     fileprivate func setUpImage()
@@ -42,7 +69,6 @@ class MenuScene: SKScene
         self.addChild(menuButton)
         
         // Add options button
-        
         optionsButton = ButtonNode(iconName: ImageName.ButtonMenu,text: String("Cut Many Vines? \(GameConfiguration.CanCutMultipleVinesAtOnce)"), onButtonPress: optionsButtonPressed)
         optionsButton.zPosition = Layer.Hud
         optionsButton.label.fontSize = 22
@@ -57,7 +83,6 @@ class MenuScene: SKScene
         let transition = SKTransition.doorsCloseHorizontal(withDuration: 0.5)
         gameScene.scaleMode = SKSceneScaleMode.aspectFill
         self.view?.presentScene(gameScene, transition: transition)
-        
     }
     
     func optionsButtonPressed()

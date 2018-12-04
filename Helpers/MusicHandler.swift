@@ -7,3 +7,30 @@
 //
 
 import Foundation
+import AVFoundation
+
+public var backgroundMusicPlayer: AVAudioPlayer!
+
+func startMusic()
+{
+    if backgroundMusicPlayer == nil
+    {
+        let backgroundMusicURL = Bundle.main.url(forResource: SoundFile.BackgroundMusic, withExtension: nil)
+        
+        do
+        {
+            let theme = try AVAudioPlayer(contentsOf: backgroundMusicURL!)
+            backgroundMusicPlayer = theme
+            
+            if !backgroundMusicPlayer.isPlaying
+            {
+                backgroundMusicPlayer.play()
+            }
+        }
+        catch
+        {
+        }
+        
+        backgroundMusicPlayer.numberOfLoops = -1
+    }
+}
